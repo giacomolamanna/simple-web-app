@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Web App</title>
+    <title>To-Do List</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Benvenuto nella mia App Web!</h1>
-    <button onclick="showMessage()">Cliccami</button>
-    <p id="message"></p>
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Aggiungi un nuovo task">
+    <button onclick="addTask()">Aggiungi</button>
+
+    <h2>Da fare</h2>
+    <ul id="todoList"></ul>
+
+    <h2>In progress</h2>
+    <ul id="inProgressList"></ul>
+
+    <h2>Completati</h2>
+    <ul id="doneList"></ul>
+
     <script src="script.js"></script>
 </body>
 </html>
