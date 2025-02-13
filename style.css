@@ -18,6 +18,7 @@ button {
 ul {
     list-style-type: none;
     padding: 0;
+    align-items: left;
 }
 li {
     background: white;
@@ -26,7 +27,7 @@ li {
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
-    align-items: left;
+    align-items: center;
 }
 .task-buttons button {
     margin-left: 5px;
