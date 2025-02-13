@@ -25,7 +25,9 @@ function createTaskItem(text, state) {
             moveToState(li, "inProgressList");
         };
         buttonsDiv.appendChild(btnMoveToInProgress);
-    } else if (state === "inProgress") {
+    } 
+
+    if (state === "inProgressList") {
         let btnMoveToDone = document.createElement("button");
         btnMoveToDone.innerText = "Done";
         btnMoveToDone.onclick = function () {
@@ -38,7 +40,8 @@ function createTaskItem(text, state) {
 }
 
 function moveToState(taskItem, newStateId) {
-    let newTaskItem = createTaskItem(taskItem.querySelector("span").innerText, newStateId);
+    let newState = newStateId === "inProgressList" ? "inProgressList" : "doneList";
+    let newTaskItem = createTaskItem(taskItem.querySelector("span").innerText, newState);
     document.getElementById(newStateId).appendChild(newTaskItem);
     taskItem.remove();
 }
