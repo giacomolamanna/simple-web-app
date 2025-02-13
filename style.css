@@ -26,7 +26,7 @@ li {
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: left;
 }
 .task-buttons button {
     margin-left: 5px;
