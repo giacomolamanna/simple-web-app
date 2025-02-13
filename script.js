@@ -20,22 +20,60 @@ function addTask() {
 function createTaskItem(text, state) {
     let li = document.createElement("li");
     li.innerHTML = `<span>${text}</span>`;
+    li.dataset.state = state;
 
-    li.onclick = function () {
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("task-buttons");
+
+    // Bottone per avanzare alla lista successiva
+    let forwardBtn = document.createElement("button");
+    forwardBtn.innerText = "➡️";
+    forwardBtn.onclick = function () {
         if (state === "todo") {
-            let confirmMove = confirm("Vuoi spostare il task in 'In Progress'?");
-            if (confirmMove) moveToState(li, "inProgressList", "inProgress");
+            confirmMove(li, "Vuoi spostare il task in 'In Progress'?", "inProgressList", "inProgress");
         } else if (state === "inProgress") {
-            let confirmMove = confirm("Vuoi spostare il task in 'Done'?");
-            if (confirmMove) moveToState(li, "doneList", "done");
+            confirmMove(li, "Vuoi spostare il task in 'Done'?", "doneList", "done");
         }
     };
+    buttonsDiv.appendChild(forwardBtn);
 
+    // Bottone per tornare alla lista precedente
+    if (state !== "todo") {
+        let backBtn = document.createElement("button");
+        backBtn.innerText = "⬆️";
+        backBtn.onclick = function () {
+            if (state === "done") {
+                confirmMove(li, "Vuoi riportare il task in 'In Progress'?", "inProgressList", "inProgress");
+            } else if (state === "inProgress") {
+                confirmMove(li, "Vuoi riportare il task in 'To Do'?", "todoList", "todo");
+            }
+        };
+        buttonsDiv.appendChild(backBtn);
+    }
+
+    // Bottone per eliminare il task
+    let deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "🗑";
+    deleteBtn.onclick = function () {
+        let confirmDelete = confirm("Vuoi eliminare definitivamente questo task?");
+        if (confirmDelete) {
+            li.remove();
+            saveTasks();
+        }
+    };
+    buttonsDiv.appendChild(deleteBtn);
+
+    li.appendChild(buttonsDiv);
     return li;
 }
 
+function confirmMove(taskItem, message, newStateId, newState) {
+    let confirmMove = confirm(message);
+    if (confirmMove) moveToState(taskItem, newStateId, newState);
+}
+
 function moveToState(taskItem, newStateId, newState) {
-    let newTaskItem = createTaskItem(taskItem.innerText, newState);
+    let newTaskItem = createTaskItem(taskItem.querySelector("span").innerText, newState);
     document.getElementById(newStateId).appendChild(newTaskItem);
     taskItem.remove();
     saveTasks();
@@ -67,8 +105,8 @@ function loadTasks() {
 
 function getListItems(listId) {
     let items = [];
-    document.querySelectorAll(`#${listId} li`).forEach(li => {
-        items.push(li.innerText);
+    document.querySelectorAll(`#${listId} li span`).forEach(span => {
+        items.push(span.innerText);
     });
     return items;
 }
