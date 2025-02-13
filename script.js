@@ -14,34 +14,23 @@ function addTask() {
 
 function createTaskItem(text, state) {
     let li = document.createElement("li");
-    li.innerHTML = `<span>${text}</span> <div class="task-buttons"></div>`;
+    li.innerHTML = `<span>${text}</span>`;
 
-    let buttonsDiv = li.querySelector(".task-buttons");
-
-    if (state === "todo") {
-        let btnMoveToInProgress = document.createElement("button");
-        btnMoveToInProgress.innerText = "In Progress";
-        btnMoveToInProgress.onclick = function () {
-            moveToState(li, "inProgressList");
-        };
-        buttonsDiv.appendChild(btnMoveToInProgress);
-    } 
-
-    if (state === "inProgressList") {
-        let btnMoveToDone = document.createElement("button");
-        btnMoveToDone.innerText = "Done";
-        btnMoveToDone.onclick = function () {
-            moveToState(li, "doneList");
-        };
-        buttonsDiv.appendChild(btnMoveToDone);
-    }
+    li.onclick = function () {
+        if (state === "todo") {
+            let confirmMove = confirm("Vuoi spostare il task in 'In Progress'?");
+            if (confirmMove) moveToState(li, "inProgressList", "inProgress");
+        } else if (state === "inProgress") {
+            let confirmMove = confirm("Vuoi spostare il task in 'Done'?");
+            if (confirmMove) moveToState(li, "doneList", "done");
+        }
+    };
 
     return li;
 }
 
-function moveToState(taskItem, newStateId) {
-    let newState = newStateId === "inProgressList" ? "inProgressList" : "doneList";
-    let newTaskItem = createTaskItem(taskItem.querySelector("span").innerText, newState);
+function moveToState(taskItem, newStateId, newState) {
+    let newTaskItem = createTaskItem(taskItem.innerText, newState);
     document.getElementById(newStateId).appendChild(newTaskItem);
     taskItem.remove();
 }
